@@ -119,7 +119,7 @@ const MimeTypeHeader = "Content-Type"
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	for _, mw := range h.middlewares {
-		err := mw.Before(r, h)
+		err := mw.Before(w, r, h)
 		if err != nil {
 			mwe, ok := err.(MiddlewareError)
 			if ok {

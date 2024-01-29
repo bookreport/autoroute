@@ -12,7 +12,7 @@ import (
 // etc
 type Middleware interface {
 	// Before can modify an incoming request in the middleware chain
-	Before(r *http.Request, h *Handler) error
+	Before(w http.ResponseWriter, r *http.Request, h *Handler) error
 }
 
 type MiddlewareError struct {
@@ -41,7 +41,7 @@ func NewSignedHeadersMiddleware(headers []string, key string) *SignedHeadersMidd
 	}
 }
 
-func (shm *SignedHeadersMiddleware) Before(r *http.Request, h *Handler) error {
+func (shm *SignedHeadersMiddleware) Before(w http.ResponseWriter, r *http.Request, h *Handler) error {
 	for _, h := range shm.headers {
 		hVal := r.Header.Get(h)
 
@@ -78,7 +78,7 @@ func NewBasicAuthMiddleware(user, pwd string) *BasicAuthMiddleware {
 	}
 }
 
-func (bam *BasicAuthMiddleware) Before(r *http.Request, h *Handler) error {
+func (bam *BasicAuthMiddleware) Before(w http.ResponseWriter, r *http.Request, h *Handler) error {
 	uname, pwd, ok := r.BasicAuth()
 	if !ok {
 		return MiddlewareError{

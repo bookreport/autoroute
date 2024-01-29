@@ -28,7 +28,7 @@ func DoSomethingSpecial(ctx context.Context) *SpecialResponse {
 
 type apiKeyVerifier struct{}
 
-func (akv *apiKeyVerifier) Before(r *http.Request, h *autoroute.Handler) error {
+func (akv *apiKeyVerifier) Before(w http.ResponseWriter, r *http.Request, h *autoroute.Handler) error {
 	val := r.Header.Get("x-api-key")
 	if val != "hurray!" {
 		return autoroute.MiddlewareError{
