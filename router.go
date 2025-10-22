@@ -3,6 +3,7 @@ package autoroute
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"net/http"
 )
 
@@ -58,7 +59,7 @@ func (ro *Router) Register(method string, path string, x interface{}, extraOptio
 	routesForMethod := ro.routeMap[method]
 	_, ok := routesForMethod[path]
 	if ok {
-		return ErrAlreadyRegistered
+		return fmt.Errorf("%w — %s", ErrAlreadyRegistered, path)
 	}
 
 	ro.routeMap[method][path] = h
